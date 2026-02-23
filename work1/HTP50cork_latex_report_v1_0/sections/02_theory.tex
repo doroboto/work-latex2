@@ -1,0 +1,76 @@
+\chapter{수치해석 이론 및 모델 정식화}
+
+\section{지배 방정식}
+본 해석은 온도 의존 물성치($\rho(T),\, C_p(T),\, k(T)$)를 고려한 1차원 비정상 열전도 방정식을 사용한다.
+\begin{equation}
+\rho(T)\,C_p(T)\,\frac{\partial T}{\partial t}
+=
+\frac{\partial}{\partial x}\left(k(T)\frac{\partial T}{\partial x}\right)
+\label{eq:governing}
+\end{equation}
+
+\section{격자 및 이산화(Method of Lines)}
+해석 영역은 코르크층($L_1$, $N_1$ 노드)과 금속층($L_2$, $N_2$ 노드)으로 구성되며,
+각 영역은 균일 격자로 분할한다.
+\[
+\Delta x_1 = \frac{L_1}{N_1},\qquad
+\Delta x_2 = \frac{L_2}{N_2},\qquad
+N=N_1+N_2
+\]
+계면 노드 인덱스는 $m=N_1$로 정의한다.
+
+공간 이산화 이후, 각 노드 온도 $T_i(t)$에 대해 ODE 형태로 변환하여 시간 적분을 수행한다(Method of Lines).
+
+\section{경계/내부/계면 노드 에너지 보존식}
+\subsection{표면 경계 노드(대류 + 내부 전도)}
+표면 노드($i=1$ 또는 구현 상 $i=0$)는 대류 열유속과 내부 전도 열유속의 균형으로 표현된다.
+\begin{equation}
+\rho_1 C_{p,1}(T_1)\left(\frac{\Delta x_1}{2}\right)\frac{dT_1}{dt}
+=
+h(t)\left(T_r(t)-T_1\right)
++
+\bar{k}_{1\to2}\frac{T_2-T_1}{\Delta x_1}
+\label{eq:surface}
+\end{equation}
+
+\subsection{내부 노드(코르크/금속 공통 형태)}
+내부 노드는 좌/우 인접 노드로의 전도 플럭스를 이용해 다음과 같이 표현된다.
+\begin{equation}
+\rho C_p(T_i)\,\Delta x\,\frac{dT_i}{dt}
+=
+\bar{k}_{i-1\to i}\frac{T_{i-1}-T_i}{\Delta x}
++
+\bar{k}_{i\to i+1}\frac{T_{i+1}-T_i}{\Delta x}
+\label{eq:interior}
+\end{equation}
+
+\subsection{이종 재료 계면 노드}
+계면은 코르크와 금속의 물성이 동시에 영향을 주므로, 계면 제어체적의 열용량을 양측 half-cell의 합으로 구성한다.
+\begin{equation}
+\left(\rho_1 C_{p,1}\frac{\Delta x_1}{2} + \rho_2 C_{p,2}\frac{\Delta x_2}{2}\right)\frac{dT_m}{dt}
+=
+\bar{k}_{m-1\to m}\frac{T_{m-1}-T_m}{\Delta x_1}
++
+\bar{k}_{m\to m+1}\frac{T_{m+1}-T_m}{\Delta x_2}
+\label{eq:interface}
+\end{equation}
+
+\subsection{후면 단열 경계 노드}
+후면($x=L_1+L_2$)은 단열 조건이므로 열유속이 0이며, 내부 전도만 반영된다.
+\begin{equation}
+\rho_2 C_{p,2}(T_N)\left(\frac{\Delta x_2}{2}\right)\frac{dT_N}{dt}
+=
+\bar{k}_{N-1\to N}\frac{T_{N-1}-T_N}{\Delta x_2}
+\label{eq:adiabatic}
+\end{equation}
+
+\section{유효 열전도도(조화 평균)}
+노드 계면의 유효 열전도도는 온도 의존성을 고려해 조화 평균을 사용한다.
+\begin{equation}
+\bar{k}_{i\to i+1} =
+\frac{2k(T_i)k(T_{i+1})}{k(T_i)+k(T_{i+1})}
+\label{eq:harmonic}
+\end{equation}
+
+\section{해석상의 단위}
+기본 단위계는 SI를 사용한다(길이 m, 시간 s, 온도 \si{\celsius} 또는 K, $k$는 \si{W/(m.K)}, $C_p$는 \si{J/(kg.K)}, $\rho$는 \si{kg/m^3}).

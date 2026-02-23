@@ -1,0 +1,66 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{kotex}
+\usepackage{fontspec}
+\setmainfont{NanumMyeongjo-Regular.ttf}[
+  Path=../fonts/,
+  BoldFont=NanumMyeongjo-Bold.ttf
+]
+\setsansfont{NanumGothic-Regular.ttf}[
+  Path=../fonts/,
+  BoldFont=NanumGothic-Bold.ttf
+]
+
+\usepackage[margin=25mm]{geometry}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage{csquotes}
+\usepackage[hidelinks]{hyperref}
+\usepackage[backend=biber,style=authoryear,sorting=nyt]{biblatex}
+\addbibresource{references.bib}
+
+\onehalfspacing
+
+\title{한글 논문 제목\\\large English Title (Optional)}
+\author{홍길동}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+이 문서는 XeLaTeX + kotex 기반 한글 논문 템플릿이다.
+인용 예시: \parencite{knuth1984texbook}.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{서론}
+연구 배경과 목적을 작성한다.
+
+\section{관련 연구}
+관련 연구를 정리한다.
+
+\section{방법}
+수식 예시:
+\begin{equation}
+f(x)=\int_0^x t^2\,dt
+\end{equation}
+
+\section{결과}
+그림 예시:
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.6\linewidth]{figures/example.png}
+  \caption{예시 그림}
+\end{figure}
+
+\section{결론}
+결론과 향후 과제를 작성한다.
+
+\printbibliography
+
+\end{document}

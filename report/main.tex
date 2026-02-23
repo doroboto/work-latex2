@@ -1,0 +1,51 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage{kotex}
+\usepackage{fontspec}
+\setmainfont{NanumMyeongjo-Regular.ttf}[
+  Path=../fonts/,
+  BoldFont=NanumMyeongjo-Bold.ttf
+]
+\setsansfont{NanumGothic-Regular.ttf}[
+  Path=../fonts/,
+  BoldFont=NanumGothic-Bold.ttf
+]
+
+\usepackage[margin=25mm]{geometry}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage[hidelinks]{hyperref}
+
+\onehalfspacing
+
+\title{한글 보고서 제목}
+\author{홍길동}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\listoffigures
+\listoftables
+\clearpage
+
+\chapter{개요}
+보고서 목적, 범위, 일정을 작성한다.
+
+\chapter{진행 내용}
+\section{요구사항}
+요구사항을 정리한다.
+
+\section{구현}
+구현 내용을 작성한다.
+
+\chapter{결과 및 회고}
+성과, 이슈, 개선안을 작성한다.
+
+\appendix
+\chapter{부록}
+부가 자료를 작성한다.
+
+\end{document}

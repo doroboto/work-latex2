@@ -1,0 +1,120 @@
+\documentclass[12pt,a4paper]{report}
+
+% ---------- Language / Fonts (Korean) ----------
+% Compile with XeLaTeX (recommended) or LuaLaTeX.
+\usepackage{kotex}
+
+% ---------- Page / Layout ----------
+\usepackage[a4paper,margin=25mm]{geometry}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+% ---------- Math / Symbols ----------
+\usepackage{amsmath,amssymb}
+\usepackage{siunitx}
+
+% ---------- Figures / Tables ----------
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+
+% ---------- Code listings ----------
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  numbers=left,
+  numberstyle=\tiny,
+  xleftmargin=2em,
+  language=Python
+}
+
+% ---------- Hyperlinks ----------
+\usepackage[hidelinks]{hyperref}
+
+% ---------- Header / Footer ----------
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{HTP50cork 코드 개발 보고서}
+\rhead{\leftmark}
+\cfoot{\thepage\ / \pageref{LastPage}}
+
+% ---------- Document ----------
+\begin{document}
+
+% ===== Cover Page =====
+\begin{titlepage}
+  \centering
+  \vspace*{20mm}
+  {\Huge \textbf{HTP50cork 코드 개발 보고서}\par}
+  \vspace{6mm}
+  {\Large 1D 비정상 열전달 및 열분해(Pyrolysis) 수치해석 + GUI 응용 프로그램\par}
+  \vspace{15mm}
+
+  \begin{tabular}{p{35mm}p{95mm}}
+    \toprule
+    문서번호 & HTP50-DEV-RPT-001 \\
+    버전 & v1.0 \\
+    작성일 & 2026-02-22 \\
+    작성자 & (작성자명 기입) \\
+    소속/제출처 & (소속/제출처 기입) \\
+    \bottomrule
+  \end{tabular}
+
+  \vfill
+  {\large \textbf{제출용 문서}\par}
+  \vspace*{10mm}
+\end{titlepage}
+
+% ===== Approval Box =====
+\chapter*{결재}
+\begin{tabular}{|p{35mm}|p{35mm}|p{35mm}|p{35mm}|}
+\hline
+작성 & 검토 & 승인 & 비고 \\
+\hline
+ &  &  &  \\
+\hline
+\end{tabular}
+
+\vspace{8mm}
+\chapter*{개정 이력}
+\begin{tabular}{p{20mm}p{25mm}p{35mm}p{70mm}}
+\toprule
+버전 & 날짜 & 작성자 & 변경 내용 \\
+\midrule
+v1.0 & 2026-02-22 & (작성자) & 초안 작성(이론 중심 + GUI 설명 + 부록 구성) \\
+\bottomrule
+\end{tabular}
+
+\tableofcontents
+\listoffigures
+\listoftables
+\clearpage
+
+% ===== Main Sections =====
+\input{sections/01_overview.tex}
+\input{sections/02_theory.tex}
+\input{sections/03_pyrolysis.tex}
+\input{sections/04_numerics.tex}
+\input{sections/05_gui.tex}
+\input{sections/06_limitations.tex}
+
+% ===== Appendices =====
+\appendix
+\input{sections/A_architecture.tex}
+\input{sections/B_code.tex}
+\input{sections/C_data_format.tex}
+\input{sections/D_references.tex}
+
+\end{document}

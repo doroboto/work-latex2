@@ -1,0 +1,28 @@
+# Build outputs
+**/build/
+*.aux
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.out
+*.toc
+*.xdv
+*.bbl
+*.bcf
+*.blg
+*.run.xml
+*.synctex.gz
+
+# Installer - texlive-portable 폴더만 제외 (스크립트와 문서는 포함)
+_installer/texlive-portable/
+_installer/install-tl*/
+_installer/*.zip
+
+# Zip archives
+*.zip
+
+# OS
+Thumbs.db
+.DS_Store

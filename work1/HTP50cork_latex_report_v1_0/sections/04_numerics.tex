@@ -1,0 +1,33 @@
+\chapter{수치 해법 및 안정성 설계}
+
+\section{강성(Stiffness)과 시간 적분법 선택}
+열분해 모델은 임계 온도 부근에서 물성 변화가 급격하고, 계면에서 물성 대비가 커서 시간 스케일이 분리되기 쉽다.
+따라서 명시적(explicit) 방법은 매우 작은 시간 스텝을 요구할 수 있으며,
+본 프로젝트는 강성 문제에 적합한 BDF(Backward Differentiation Formula) 기반 내재적(implicit) 적분을 사용한다.
+
+\section{BDF 기반 ODE 솔버 구성}
+시간 적분은 SciPy \texttt{solve\_ivp}의 \texttt{method='BDF'}를 사용한다.
+기본 설정 예시는 다음과 같다.
+\begin{itemize}
+  \item 상대 오차 허용: \texttt{rtol = 1e-6}
+  \item 절대 오차 허용: \texttt{atol = 1e-8}
+  \item 초기 스텝: \texttt{first\_step = 1e-4 s}
+\end{itemize}
+
+\section{희소 야코비안(sparsity) 제공}
+1D 열전달 이산화는 국소 결합(local coupling) 특성으로 인해 야코비안 구조가 삼중대각에 가깝다.
+따라서 야코비안의 비제로 구조(sparsity pattern)를 미리 제공하면,
+내부 뉴턴 반복 및 야코비안 근사 비용을 절감할 수 있다.
+
+\section{보간/외삽 및 안정성 안전장치}
+\subsection{재료 물성 보간}
+재료 물성 테이블은 선형 보간으로 구성되며, 테이블 범위 밖에서는 선형 외삽을 허용한다.
+\subsection{경계조건 보간}
+$h(t)$ 및 $T_r(t)$는 선형 보간을 사용하되, 시간 범위 밖에서는 최초/최종 값을 유지하도록 클램프(clamp)한다.
+\subsection{하한값(guard) 적용}
+수치적 발산/0-division을 방지하기 위해 다음과 같은 하한값을 적용한다.
+\[
+k \ge 10^{-3},\qquad
+C_p \ge 1.0\ (\text{또는 no-pyro에서 } 500),\qquad
+\rho \ge 10^{-20}
+\]

@@ -1,0 +1,81 @@
+\chapter{열분해(Pyrolysis) 모델(이력 및 비가역성)}
+
+\section{열분해 모델링의 핵심: 상태 변수 $T_{\max}$}
+열분해는 비가역 반응이므로, 현재 온도 $T$뿐 아니라 과거 최대 도달 온도 $T_{\max}$를 추적해야 한다.
+\begin{equation}
+T_{\max}(t)=\max_{0\le\tau\le t}\{T(\tau)\}
+\label{eq:tmax_def}
+\end{equation}
+
+\section{$T_{\max}$의 ODE화(수치적 매끄러움 확보)}
+$T_{\max}$를 단순 max 연산으로 갱신하면 미분 불연속이 발생할 수 있으므로,
+수치 안정성을 위해 ODE 형태로 연립하여 풀이한다.
+핵심 아이디어는 (1) 온도가 상승할 때만, (2) $T>T_{\max}$일 때만 $T_{\max}$가 증가하도록 하는 것이다.
+\begin{equation}
+\frac{dT_{\max}}{dt}
+=
+\underbrace{\max\left(0,\frac{dT}{dt}\right)}_{\text{ramp}}
+\cdot
+\underbrace{\sigma\!\left(T-T_{\max}\right)}_{\text{smooth switch}}
+\label{eq:tmax_ode}
+\end{equation}
+여기서 $\sigma(\cdot)$는 시그모이드(로지스틱) 게이트 함수이며, 불연속 \texttt{if-else}를 대체하여 강성 증가를 완화한다.
+
+\section{물성치 비가역 동결(Property Freezing)}
+\subsection{동결 계수(게이트) 정의}
+코르크 P50은 열분해 임계 온도 $T_{\text{crit}}$를 초과한 후 냉각 단계로 들어가면, 물성치가 virgin 상태로 회복되지 않는다.
+이를 모사하기 위해 다음의 동결 계수 $\lambda$를 정의한다.
+\begin{equation}
+\lambda
+=
+\sigma\!\left(T_{\max}-T_{\text{crit}}\right)\;
+\sigma\!\left(T_{\max}-T\right)
+\label{eq:lambda}
+\end{equation}
+첫 번째 게이트는 ``열분해가 시작되었는가''(임계 온도 초과), 두 번째 게이트는 ``현재 냉각 중인가''를 판단한다.
+
+\subsection{유효 물성치 결정}
+동결 계수로 최종 유효 물성치 $\phi_{\text{eff}}$를 선형 보간하여 정의한다.
+\begin{equation}
+\phi_{\text{eff}}(T,T_{\max})
+=
+(1-\lambda)\,\phi_{\text{table}}(T)
++
+\lambda\,\phi_{\text{table}}(T_{\max})
+\label{eq:phi_eff}
+\end{equation}
+여기서 $\phi \in \{k,\,C_p\}$이다.
+즉, $\lambda\simeq 1$인 경우(열분해 후 냉각) $k, C_p$는 $T_{\max}$에서의 값으로 고정된다.
+
+\section{밀도 감소 모델(Advanced 모드)}
+\subsection{Simple 모드}
+Simple 모드에서는 밀도 변화를 무시하고 $\rho$를 상수(혹은 테이블 값)로 둔다.
+\begin{equation}
+\rho(T)=\rho_{\text{virgin}}\quad(\text{constant})
+\end{equation}
+
+\subsection{Advanced 모드: 질량 프로파일 기반 $\rho(T_{\max})$}
+Advanced 모드에서는 열분해 가스 방출에 따른 질량 손실을 고려한다.
+고정 격자(fixed-grid) 가정 하에서 부피 변화가 없으므로, 질량 변화가 곧 밀도 변화로 해석된다.
+\begin{equation}
+\rho_{\text{eff}}(T_{\max})
+=
+\rho_{\text{virgin}}
+\times
+\frac{M(T_{\max})}{100}
+\label{eq:rho_eff}
+\end{equation}
+여기서 $M(T_{\max})$는 TGA 기반 정규화 질량(\%) 프로파일이다.
+
+\section{최종 연립 시스템}
+열분해 모델을 포함하면 최종 상태는 다음과 같이 $2N$ 차원의 ODE 시스템이 된다.
+\begin{equation}
+\frac{d}{dt}
+\begin{bmatrix}
+\mathbf{T}\\
+\mathbf{T}_{\max}
+\end{bmatrix}
+=
+\mathbf{F}(t,\mathbf{T},\mathbf{T}_{\max})
+\label{eq:system_2N}
+\end{equation}

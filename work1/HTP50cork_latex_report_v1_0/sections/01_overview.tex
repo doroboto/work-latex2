@@ -1,0 +1,47 @@
+\chapter{개발 목적 및 개요}
+
+\section{프로젝트 개요}
+HTP50cork는 \textbf{코르크(P50) + 금속 기판} 이중층 구조의 \textbf{1차원 비정상(Transient) 열전달}을 수치적으로 해석하고,
+\textbf{열분해(Pyrolysis)로 인한 비가역 물성 변화}를 포함하여 열응답을 예측하는 데스크톱 GUI 응용 프로그램이다.
+
+본 프로젝트의 설계 의도는 다음과 같다.
+\begin{itemize}
+  \item 열전달 지배방정식을 공간 이산화하여 ODE 시스템으로 구성(Method of Lines).
+  \item 열분해의 비가역성을 상태 변수 $T_{\max}$로 추적하여 물성치 동결(Freeze)을 구현.
+  \item 강성(Stiff) 문제에 대응하기 위해 BDF 기반 내재적 시간 적분 및 희소 야코비안(sparsity)을 적용.
+  \item 사용자가 재료/경계 데이터를 CSV로 로드 및 편집하고, 결과를 그래프로 확인/내보내기할 수 있는 GUI 제공.
+\end{itemize}
+
+\section{개발 범위}
+\subsection{물리 모델}
+\begin{itemize}
+  \item 해석 차원: 1D (두께 방향 $x$)
+  \item 구조: 코르크층(두께 $L_1$) + 금속층(두께 $L_2$)
+  \item 경계조건:
+    \begin{itemize}
+      \item 표면($x=0$): 대류 열전달 $q_{\text{conv}}=h(t)\,[T_r(t)-T_s]$
+      \item 후면($x=L_1+L_2$): 단열(adiabatic), $\partial T/\partial x = 0$
+    \end{itemize}
+  \item 열분해 모델:
+    \begin{itemize}
+      \item Simple 모드: $C_p, k$ 비가역 동결(냉각 시 $T_{\max}$ 기준)
+      \item Advanced 모드: Simple + 질량 프로파일 기반 밀도 감소 $\rho(T_{\max})$
+    \end{itemize}
+\end{itemize}
+
+\subsection{소프트웨어 범위}
+\begin{itemize}
+  \item GUI: 입력(Geometry/Pyrolysis/데이터), 실행, 진행률, 결과 시각화(3개 그래프)
+  \item 데이터: CSV 로드/편집, 사용자 기본값(JSON) 저장
+  \item 결과: CSV/PNG 내보내기
+\end{itemize}
+
+\section{해석 영역 개념도}
+그림~\ref{fig:bilayer}는 이중층 구조, 격자 분할 및 경계조건을 개념적으로 나타낸 것이다.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.95\linewidth]{figures/fig_bilayer_domain.pdf}
+  \caption{코르크--금속 이중층 1D 해석 영역 및 경계조건 개념도}
+  \label{fig:bilayer}
+\end{figure}

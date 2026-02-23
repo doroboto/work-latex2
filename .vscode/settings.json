@@ -1,0 +1,82 @@
+{
+  "latex-workshop.latex.tools": [
+    {
+      "name": "latexmk-xelatex-portable",
+      "command": "${workspaceFolder}/_installer/texlive-portable/bin/windows/latexmk.exe",
+      "args": [
+        "-xelatex",
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-outdir=build",
+        "%DOC%"
+      ],
+      "env": {}
+    },
+    {
+      "name": "xelatex-portable",
+      "command": "${workspaceFolder}/_installer/texlive-portable/bin/windows/xelatex.exe",
+      "args": [
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-output-directory=build",
+        "%DOC%"
+      ],
+      "env": {}
+    },
+    {
+      "name": "biber-portable",
+      "command": "${workspaceFolder}/_installer/texlive-portable/bin/windows/biber.exe",
+      "args": [
+        "--input-directory=build",
+        "--output-directory=build",
+        "%DOCFILE%"
+      ],
+      "env": {}
+    }
+  ],
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "latexmk (xelatex) - Portable",
+      "tools": ["latexmk-xelatex-portable"]
+    },
+    {
+      "name": "xelatex -> biber -> xelatex*2 - Portable",
+      "tools": ["xelatex-portable", "biber-portable", "xelatex-portable", "xelatex-portable"]
+    },
+    {
+      "name": "xelatex only - Portable",
+      "tools": ["xelatex-portable"]
+    }
+  ],
+  "latex-workshop.latex.autoBuild.run": "onSave",
+  "latex-workshop.view.pdf.viewer": "tab",
+  "latex-workshop.latex.outDir": "build",
+  "latex-workshop.synctex.afterBuild.enabled": true,
+  "latex-workshop.latex.autoClean.run": "onBuilt",
+  "latex-workshop.latex.clean.fileTypes": [
+    "*.aux",
+    "*.bbl",
+    "*.blg",
+    "*.idx",
+    "*.ind",
+    "*.lof",
+    "*.lot",
+    "*.out",
+    "*.toc",
+    "*.acn",
+    "*.acr",
+    "*.alg",
+    "*.glg",
+    "*.glo",
+    "*.gls",
+    "*.fls",
+    "*.log",
+    "*.fdb_latexmk",
+    "*.snm",
+    "*.nav",
+    "*.run.xml",
+    "*.bcf"
+  ]
+}

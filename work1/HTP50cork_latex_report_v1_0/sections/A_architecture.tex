@@ -1,0 +1,38 @@
+\chapter{(부록 A) 코드 아키텍처}
+
+\section{계층 구조 개요}
+본 소프트웨어는 물리 엔진(Physics), 데이터 관리(Data), 프레젠테이션(GUI) 계층으로 책임을 분리한다.
+그림~\ref{fig:arch-layers}는 계층 구조를 개념적으로 나타낸다.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.95\linewidth]{figures/fig_architecture_layers.pdf}
+  \caption{계층 기반 아키텍처(개념도)}
+  \label{fig:arch-layers}
+\end{figure}
+
+\section{핵심 클래스 책임}
+\subsection{HeatSolver (Physics Engine)}
+\begin{itemize}
+  \item 격자 생성 및 노드 인덱싱(코르크/금속/계면)
+  \item 재료 물성 $k(T), C_p(T), \rho(T)$ 보간 함수 초기화
+  \item 경계조건 $h(t), T_r(t)$ 보간 함수 초기화
+  \item 열분해 모드(Simple/Advanced) 처리: $T_{\max}$ 상태 변수, Cp/k 동결, 밀도 감소(선택)
+  \item ODE RHS 구성 및 BDF 적분 수행
+\end{itemize}
+
+\subsection{HeatTransferApp (GUI Controller)}
+\begin{itemize}
+  \item 사용자 입력 수집/검증
+  \item 두 솔버(열분해 포함/미포함) 생성 및 워커 스레드 실행
+  \item 진행률 표시(폴링), 그래프 갱신, CSV/PNG 내보내기
+  \item 팝업(Table Editor, Graph Options) 관리
+\end{itemize}
+
+\section{파일 구성(로컬 프로젝트 기준)}
+\begin{itemize}
+  \item \texttt{main.tex}: 보고서 메인(이 문서)
+  \item \texttt{sections/}: 장별 텍스트
+  \item \texttt{figures/}: 개념도(벡터 PDF)
+  \item \texttt{code/}: 부록용 코드 발췌 및 원본(\texttt{app.py})
+\end{itemize}

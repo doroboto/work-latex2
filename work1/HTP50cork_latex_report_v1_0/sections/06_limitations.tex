@@ -1,0 +1,16 @@
+\chapter{한계 및 향후 개선 방향}
+
+\section{모델링 한계}
+\begin{itemize}
+  \item 복사(radiation) 열전달은 기본 모델에 포함되어 있지 않다(대류 중심).
+  \item 삭마(ablation)로 인한 표면 후퇴(moving boundary)는 fixed-grid 가정으로 단순화되어 있다.
+  \item 열분해 반응 kinetics(Arrhenius 반응률 등)는 상태 변수 $T_{\max}$ 기반의 준현상학적(phenomenological) 모델로 대체되어 있다.
+\end{itemize}
+
+\section{소프트웨어 개선 제안}
+\begin{itemize}
+  \item 모듈 분리: 물리 엔진/GUI/데이터 I/O를 패키지 구조로 분리하여 유지보수성 향상
+  \item 테스트: 회귀 테스트(기본 입력 대비 결과 스냅샷) 및 단위 테스트 도입
+  \item 입력 검증: 물리적 범위/단위 정합성 검증 강화
+  \item 확장: 복사 경계조건, 반응열/가스 생성, 이동 경계 모델 등 단계적 확장
+\end{itemize}

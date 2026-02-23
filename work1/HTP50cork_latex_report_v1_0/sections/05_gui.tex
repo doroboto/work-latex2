@@ -1,0 +1,76 @@
+\chapter{GUI 구성 및 기능 설명}
+
+\section{GUI 레이아웃 개요}
+프로그램은 좌측 사이드바 입력 패널과 우측 3개 그래프 영역으로 구성된다(그림~\ref{fig:gui-layout}).
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.95\linewidth]{figures/fig_gui_layout.pdf}
+  \caption{GUI 레이아웃 개념도}
+  \label{fig:gui-layout}
+\end{figure}
+
+\section{사이드바 입력 패널}
+\subsection{입력 항목}
+사이드바는 크게 (1) Unit System, (2) Geometry, (3) Pyrolysis, (4) Material \& BC Data로 구성된다.
+표~\ref{tab:sidebar}는 주요 입력과 기능을 정리한 것이다.
+
+\begin{table}[htbp]
+\centering
+\caption{사이드바 주요 UI 요소 및 기능}
+\label{tab:sidebar}
+\begin{tabular}{p{35mm}p{105mm}}
+\toprule
+구성 요소 & 기능 \\
+\midrule
+Unit System & 단위계 선택(SI). 기본값 자동 적용 및 일부 파라미터 자동 갱신 \\
+Geometry & $L_1, L_2, N_1, N_2, t_{final}, T_{init}$ 입력 \\
+Pyrolysis: Density Change & ON: Advanced(밀도 감소 포함), OFF: Simple(Cp/k 동결만) \\
+Pyrolysis: T\_critical & 열분해 동결 활성화 임계 온도($T_{crit}$) 설정 \\
+Material \& BC Data & Cork/Metal 물성 및 $h(t), T_r(t)$ 데이터 CSV 로드/편집 \\
+RUN SIMULATION & 입력 검증 후 해석 실행(열분해 포함/미포함 2회) \\
+Progress/Status & 진행률 및 상태(Ready/Solving/Done/Error) 표시 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{그래프 영역 및 버튼}
+그래프는 3개 섹션으로 구성된다.
+\begin{enumerate}
+  \item Temperature History: 온도 이력(노드별)
+  \item Specific Heat (Cp): 비열 변화(열분해 동결 영향 확인)
+  \item Pyrolysis Comparison: 열분해 포함(실선) vs 미포함(점선) 비교
+\end{enumerate}
+
+각 그래프 섹션에는 공통적으로 \textbf{Options/CSV/PNG} 버튼이 제공된다.
+\begin{itemize}
+  \item Options: 표시 노드/색상/레이블 설정(팝업)
+  \item CSV: 해당 그래프 데이터 내보내기
+  \item PNG: 해당 그래프 이미지(고해상도) 내보내기
+\end{itemize}
+Temperature History에는 추가로 \textbf{Peak Temp} 버튼이 있으며, 선택 노드의 최고 온도와 도달 시간을 요약 표시한다.
+
+\section{실행 흐름(스레딩/진행률)}
+GUI 프리징을 방지하기 위해 계산은 워커 스레드에서 수행되며,
+메인 스레드는 일정 주기(\SI{100}{ms})로 솔버의 현재 시간(\texttt{t\_current})을 폴링하여 진행률을 업데이트한다.
+그림~\ref{fig:flow}는 실행 흐름을 개념적으로 나타낸다.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.95\linewidth]{figures/fig_execution_flow.pdf}
+  \caption{시뮬레이션 실행 흐름(개념도)}
+  \label{fig:flow}
+\end{figure}
+
+\section{데이터 편집 팝업(Table Editor)}
+재료/경계 데이터는 내장 Table Editor로 편집할 수 있으며, 주요 기능은 다음과 같다.
+\begin{itemize}
+  \item Add Row / Delete Row: 데이터 행 추가/삭제
+  \item Plot Graph: 현재 데이터의 그래프 미리보기
+  \item Save Default: 사용자 기본값(JSON)으로 영구 저장
+  \item Save \& Close: 현재 세션에 적용 후 닫기
+\end{itemize}
+
+\section{그래프 옵션 팝업(Graph Options)}
+Graph Options 창에서는 라인 단위로 (노드/색상/레이블)을 설정한다.
+노드 지정은 숫자 외에도 \texttt{surf, mid/int, bot} 등의 별칭을 허용한다.

@@ -1,0 +1,33 @@
+\chapter{(부록 C) 입력 데이터 형식(CSV)}
+
+\section{데이터셋 개요}
+프로그램은 재료 물성 및 경계조건을 CSV로 입력받는다.
+기본적으로 각 CSV는 1행 헤더 + 수치 행으로 구성된다.
+
+\section{CSV 헤더(권장)}
+표~\ref{tab:csvheaders}는 데이터 키별 권장 헤더를 정리한 것이다.
+
+\begin{table}[htbp]
+\centering
+\caption{입력 CSV 헤더 형식}
+\label{tab:csvheaders}
+\begin{tabular}{p{40mm}p{100mm}}
+\toprule
+데이터 키 & 헤더(열) \\
+\midrule
+Cork (Pyrolysis) & \texttt{Temp, k, Cp, rho} \\
+Cork (No Pyrolysis) & \texttt{Temp, k, Cp, rho} \\
+Mass Profile (Advanced) & \texttt{Temp, MassNorm} \\
+Metal & \texttt{Temp, k, Cp, rho} \\
+h(t) & \texttt{Time, Value} \\
+Tr(t) & \texttt{Time, Value} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{단위 주의}
+\begin{itemize}
+  \item 온도: 기본 \si{\celsius} 기준(테이블과 GUI가 \si{\celsius}로 가정)
+  \item $h$: \si{W/(m^2.K)}, $k$: \si{W/(m.K)}, $C_p$: \si{J/(kg.K)}, $\rho$: \si{kg/m^3}
+  \item 시간: \si{s}
+\end{itemize}
