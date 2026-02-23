@@ -1,8 +1,8 @@
 {
   "latex-workshop.latex.tools": [
     {
-      "name": "latexmk-xelatex",
-      "command": "latexmk",
+      "name": "latexmk-xelatex-portable",
+      "command": "C:/Users/kakha/OneDrive/_Project/work/work-latex-main/_installer/texlive-portable/bin/windows/latexmk.exe",
       "args": [
         "-xelatex",
         "-synctex=1",
@@ -10,17 +10,54 @@
         "-file-line-error",
         "-outdir=build",
         "%DOC%"
-      ]
+      ],
+      "env": {}
+    },
+    {
+      "name": "xelatex-portable",
+      "command": "C:/Users/kakha/OneDrive/_Project/work/work-latex-main/_installer/texlive-portable/bin/windows/xelatex.exe",
+      "args": [
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-output-directory=build",
+        "%DOC%"
+      ],
+      "env": {}
+    },
+    {
+      "name": "biber-portable",
+      "command": "C:/Users/kakha/OneDrive/_Project/work/work-latex-main/_installer/texlive-portable/bin/windows/biber.exe",
+      "args": [
+        "--input-directory=build",
+        "--output-directory=build",
+        "%DOCFILE%"
+      ],
+      "env": {}
     }
   ],
   "latex-workshop.latex.recipes": [
     {
-      "name": "latexmk-xelatex",
+      "name": "latexmk (xelatex) - Portable",
+      "tools": ["latexmk-xelatex-portable"]
+    },
+    {
+      "name": "xelatex -> biber -> xelatex*2 - Portable",
+      "tools": ["xelatex-portable", "biber-portable", "xelatex-portable", "xelatex-portable"]
+    },
+    {
+      "name": "xelatex only - Portable",
       "tools": [
-        "latexmk-xelatex"
+        "xelatex-portable"
       ]
     }
   ],
+  "latex-workshop.latex.recipe.default": "latexmk (xelatex) - Portable",
+  "latex-workshop.linting.chktex.enabled": false,
+  "latex-workshop.chktex.enabled": false,
   "latex-workshop.latex.autoBuild.run": "onSave",
-  "latex-workshop.view.pdf.viewer": "tab"
+  "latex-workshop.view.pdf.viewer": "tab",
+  "latex-workshop.latex.outDir": "build",
+  "latex-workshop.synctex.afterBuild.enabled": true,
+  "latex.linter.enabled": false
 }
