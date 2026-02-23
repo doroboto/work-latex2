@@ -3,6 +3,8 @@
 이 문서는 `TeX Live + XeLaTeX + kotex` 기준으로 작성되었고,
 Windows/macOS/Linux/VS Code/CLI 환경에서 같은 빌드 흐름으로 쓰도록 구성했다.
 
+> 회사 보안 환경에서 포터블 설치가 필요한 경우: `_installer/README_PORTABLE.md`를 먼저 확인하세요.
+
 ## 1) 공통 준비
 
 - TeX Live 설치
